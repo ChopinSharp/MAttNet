@@ -1,3 +1,6 @@
 .ipynb_checkpoints
 *.pyc
 /.vscode
+cache/*
+data/*
+!data/README.md
