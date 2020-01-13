@@ -64,6 +64,8 @@ class Inference:
     # Load network
     self.net = self.load_net()
 
+    self._scale = None
+
   def load_net(self):
     # Load network
     if self.net_name == 'vgg16':
@@ -89,6 +91,9 @@ class Inference:
     return net
 
   def predict(self, img_path):
+    # print('=============================================================')
+    # print(cfg)
+    # print('=============================================================')
     # return scores/probs (num_rois, 81), pred_boxes (num_rois, 81*4)
     # in numpy
     im = cv2.imread(img_path)
@@ -110,6 +115,8 @@ class Inference:
     else:
       # Simply repeat the boxes, once for each class
       pred_boxes = np.tile(boxes, (1, scores.shape[1]))
+
+    self._scale =  im_scales[0]
 
     return scores, pred_boxes
 

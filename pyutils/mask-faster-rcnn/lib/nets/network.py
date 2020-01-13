@@ -111,9 +111,9 @@ class Network(nn.Module):
     [    0      -----    ---------------  ]
     [           H - 1         H - 1      ]
     """
-    rois = rois.detach()
+    rois = rois.detach()      # [batch_size, 5]
 
-    x1 = rois[:, 1::4] / 16.0
+    x1 = rois[:, 1::4] / 16.0 # [batch_size, 1]
     y1 = rois[:, 2::4] / 16.0
     x2 = rois[:, 3::4] / 16.0
     y2 = rois[:, 4::4] / 16.0
@@ -129,7 +129,7 @@ class Network(nn.Module):
       (x1 + x2 - width + 1) / (width - 1),
       zero,
       (y2 - y1) / (height - 1),
-      (y1 + y2 - height + 1) / (height - 1)], 1).view(-1, 2, 3)
+      (y1 + y2 - height + 1) / (height - 1)], 1).view(-1, 2, 3) # [batch_size, 2, 3]
 
     if max_pool:
       pre_pool_size = cfg.POOLING_SIZE * 2
@@ -254,6 +254,7 @@ class Network(nn.Module):
     else:
       if cfg.TEST.MODE == 'nms':
         rois, _ = self._proposal_layer(rpn_cls_prob, rpn_bbox_pred)
+        # self._predictions['__roi_scores'] = _
       elif cfg.TEST.MODE == 'top':
         rois, _ = self._proposal_top_layer(rpn_cls_prob, rpn_bbox_pred)
       else:
@@ -270,6 +271,7 @@ class Network(nn.Module):
 
   def _region_classification(self, spatial_fc7):
     fc7 = spatial_fc7.mean(3).mean(2) # average pooling -> (n, 2048)
+    # self._predictions['__temp_head_pool'] = fc7
     cls_score = self.cls_score_net(fc7)
     cls_pred = torch.max(cls_score, 1)[1]
     cls_prob = F.softmax(cls_score)
@@ -466,6 +468,8 @@ class Network(nn.Module):
     self._anchor_component(net_conv.size(2), net_conv.size(3))
    
     rois = self._region_proposal(net_conv)
+    # self._predictions['__temp_net_conv'] = net_conv
+    # self._predictions['__temp_rois'] = rois
     if cfg.POOLING_MODE == 'crop':
       if cfg.POOLING_ALIGN == True:
         pool5 = self._crop_pool_layer_align(net_conv, rois, self._im_info)
@@ -474,10 +478,13 @@ class Network(nn.Module):
     else:
       pool5 = self._roi_pool_layer(net_conv, rois)
 
+    # self._predictions['__temp_pool5'] = pool5
+
     if self._mode == 'TRAIN':
       torch.backends.cudnn.benchmark = True # benchmark because now the input size are fixed
     
     spatial_fc7 = self._head_to_tail(pool5)  # (num_rois, 2048, 7, 7)
+    # self._predictions['__temp_head_feats'] = spatial_fc7
     cls_prob, bbox_pred = self._region_classification(spatial_fc7)
 
     if self._mode == 'TRAIN':

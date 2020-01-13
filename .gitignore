@@ -4,3 +4,6 @@
 cache/*
 data/*
 !data/README.md
+/result
+output/refcoco_unc/mrcn_cmr_with_st.pth
+output/refcoco_unc/mrcn_cmr_with_st.json
