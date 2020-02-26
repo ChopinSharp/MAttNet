@@ -14,3 +14,8 @@
 [refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 77.54%
 [refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 81.47%
 [refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 71.09%
+
+# original MAttNet results
+[refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 77.52%
+[refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 81.53%
+[refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 71.09%

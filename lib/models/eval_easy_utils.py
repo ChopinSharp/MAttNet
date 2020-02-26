@@ -141,6 +141,7 @@ def eval_split(loader, model, crit, split, opt):
       pos_sc = scores[gd_ix]
       scores[gd_ix] = -1e5
       max_neg_sc = np.max(scores)
+      scores[gd_ix] = pos_sc
       loss = max(0, opt['margin']+max_neg_sc-pos_sc)
       loss_sum += loss
       loss_evals += 1
@@ -173,6 +174,7 @@ def eval_split(loader, model, crit, split, opt):
       entry['rel_ann_id'] = data['cxt_ann_ids'][pred_ix][rel_ix]        # rel ann_id
       entry['weights'] = weights[pred_ix].data.cpu().numpy().tolist()   # list of 2 weights
       entry['pred_atts'] = pred_atts # list of (att_wd, score)
+      entry['scores'] = scores.tolist()
       predictions.append(entry)
       toc = time.time()
       model_time += (toc - tic)

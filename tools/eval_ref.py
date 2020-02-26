@@ -15,8 +15,8 @@ import argparse
 # model
 import _init_paths
 from layers.joint_match import JointMatching
-from loaders.dets_loader import DetsLoader
-import models.eval_dets_utils as eval_utils
+from loaders.ref_loader import RefLoader
+import models.eval_ref_utils as eval_utils
 
 # torch
 import torch
@@ -44,9 +44,18 @@ def evaluate(params):
   # set up loader
   data_json = osp.join('cache/prepro', params['dataset_splitBy'], 'data.json')
   data_h5 = osp.join('cache/prepro', params['dataset_splitBy'], 'data.h5')
-  dets_json = osp.join('cache/detections', params['dataset_splitBy'], '%s_%s_%s_dets.json' % \
-                       (model_opt['net_name'], model_opt['imdb_name'], model_opt['tag']))
-  loader = DetsLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json)
+  dets_json = None
+  if params['mode'] == 'easy':
+    dets_json = 'cache/detections/refcoco_unc/matt_gts_refcoco_unc.json'
+    det_feats = 'cache/feats/refcoco_unc/mrcn/res101_coco_minus_refer_notime_our_gt_feats.h5'
+  elif params['mode'] == 'ref':
+    dets_json = 'cache/detections/refcoco_unc/matt_dets_refcoco_unc_pos.json'
+    det_feats = 'cache/feats/refcoco_unc/mrcn/res101_coco_minus_refer_notime_our_det_feats.h5'
+  elif params['mode'] == 'det':
+    raise NotImplementedError('det mode not implemented')
+  else:
+    raise ValueError('invalid mode ' + params['mode'])
+  loader = RefLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json)
 
   # loader's feats
   feats_dir = '%s_%s_%s' % (model_opt['net_name'], model_opt['imdb_name'], model_opt['tag'])
@@ -55,9 +64,7 @@ def evaluate(params):
   args.tag = model_opt['tag']
   args.iters = model_opt['iters']
   loader.prepare_mrcn(head_feats_dir=osp.join('cache/feats/', model_opt['dataset_splitBy'], 'mrcn', feats_dir), 
-                      args=args) 
-  det_feats = osp.join('cache/feats', model_opt['dataset_splitBy'], 'mrcn', 
-                       '%s_%s_%s_det_feats.h5' % (model_opt['net_name'], model_opt['imdb_name'], model_opt['tag']))
+                      args=args)
   loader.loadFeats({'det': det_feats})
 
   # check model_info and params
@@ -75,17 +82,17 @@ def evaluate(params):
         (params['dataset_splitBy'], params['split'], len(predictions), acc*100.)) 
 
   # save
-  out_dir = osp.join('cache', 'results', params['dataset_splitBy'], 'dets')
+  out_dir = osp.join('cache', 'results', params['dataset_splitBy'], 'ref')
   if not osp.isdir(out_dir):
     os.makedirs(out_dir)
-  out_file = osp.join(out_dir, params['id']+'_'+params['split']+'.json')
+  out_file = osp.join(out_dir, params['id']+'_'+params['split']+'_'+params['mode']+'.json')
   with open(out_file, 'w') as of:
     json.dump({'predictions': predictions, 'acc': acc}, of)
 
   # write to results.txt
-  f = open('experiments/det_results.txt', 'a')
-  f.write('[%s][%s], id[%s]\'s acc is %.2f%%\n' % \
-          (params['dataset_splitBy'], params['split'], params['id'], acc*100.0))
+  f = open('experiments/ref_results.txt', 'a')
+  f.write('[%s][%s][%s], id[%s]\'s acc is %.2f%%\n' % \
+          (params['mode'], params['dataset_splitBy'], params['split'], params['id'], acc*100.0))
 
 
 if __name__ == '__main__':
@@ -97,6 +104,7 @@ if __name__ == '__main__':
   parser.add_argument('--id', type=str, default='0', help='model id name')
   parser.add_argument('--num_sents', type=int, default=-1, help='how many sentences to use when periodically evaluating the loss? (-1=all)')
   parser.add_argument('--verbose', type=int, default=1, help='if we want to print the testing progress')
+  parser.add_argument('--mode', type=str, default='ref', help='ref, det OR easy')
   args = parser.parse_args()
   params = vars(args)
 

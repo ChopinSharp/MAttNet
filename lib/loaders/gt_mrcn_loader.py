@@ -576,6 +576,17 @@ class GtMRCNLoader(Loader):
                       'cxt_fc7': cxt_fc7, 'cxt_lfeats': cxt_lfeats}
     data['labels'] = labels
     data['bounds'] = {'it_pos_now': self.iterators[split], 'it_max': max_index, 'wrapped': wrapped}
+    
+    ## @@@
+    # if 65536 in sent_ids:
+    #   cboxes = []
+    #   print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+    #   for _, ann_id in enumerate(ann_ids):
+    #     cbox = self.Anns[ann_id]['box']
+    #     cboxes.append(cbox)
+    #     print(_, cbox)
+    #   print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+
     return data
 
 
