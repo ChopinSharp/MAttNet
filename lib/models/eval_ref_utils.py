@@ -44,18 +44,10 @@ def eval_split(loader, model, crit, split, opt):
   acc = 0
   predictions = []
   finish_flag = False
-  failure = 0
 
   while True:
     
-    try:
-      data = loader.getSentBatch(split, opt)      
-    except RuntimeError:
-      torch.cuda.empty_cache()
-      failure += 1
-      if finish_flag or data['bounds']['wrapped']:
-        break
-      continue
+    data = loader.getSentBatch(split, opt)
     
     det_ids = data['det_ids']
     sent_ids = data['sent_ids']
@@ -138,12 +130,6 @@ def eval_split(loader, model, crit, split, opt):
     # if we wrapped around the split
     if finish_flag or data['bounds']['wrapped']:
       break
-
-  print()
-  print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-  print(failure, 'failures in total')
-  print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-  print()
 
   return acc/loss_evals, predictions
 

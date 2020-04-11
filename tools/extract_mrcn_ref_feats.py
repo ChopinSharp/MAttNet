@@ -23,7 +23,7 @@ from mrcn import inference_no_imdb
 
 # dataloader
 # HERE
-from loaders.ref_dets_loader import RefDetsLoader
+from loaders.ref_loader import RefLoader
 
 # box functions
 def xywh_to_xyxy(boxes):
@@ -78,8 +78,9 @@ def main(args):
   data_json = osp.join('cache/prepro', dataset_splitBy, 'data.json')
   data_h5 = osp.join('cache/prepro', dataset_splitBy, 'data.h5')
   ## HERE
-  dets_json = osp.join('cache/detections', dataset_splitBy, 'matt_dets_refcoco_unc_pos.json' ) 
-  loader = RefDetsLoader(data_json, data_h5, dets_json)
+  id_str = '%s_%s_%s_%d' % (args.m, args.tid, dataset_splitBy, args.top_N)
+  dets_json = osp.join('cache/detections', dataset_splitBy, 'matt_dets_%s.json' % id_str) 
+  loader = RefLoader(data_json, data_h5, dets_json)
   images = loader.images
   dets = loader.dets
   num_dets = len(dets)
@@ -90,7 +91,7 @@ def main(args):
 
   # feats_h5
   # HERE
-  file_name = '%s_%s_%s_our_det_feats.h5' % (args.net_name, args.imdb_name, args.tag)
+  file_name = 'matt_feats_%s.h5' % id_str
   feats_h5 = osp.join('cache/feats', dataset_splitBy, 'mrcn', file_name)
 
   f = h5py.File(feats_h5, 'w')
@@ -127,6 +128,11 @@ if __name__ == '__main__':
 
   parser.add_argument('--dataset', type=str, default='refcoco', help='dataset name: refclef, refcoco, refcoco+, refcocog')
   parser.add_argument('--splitBy', type=str, default='unc', help='splitBy: unc, google, berkeley')
+  
+  parser.add_argument('--tid', type=str, required=True)
+  parser.add_argument('--top-N', type=int, default=8)
+  parser.add_argument('--m', type=str, required=True)
+
   args = parser.parse_args()
   main(args)
 

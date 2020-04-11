@@ -44,17 +44,9 @@ def evaluate(params):
   # set up loader
   data_json = osp.join('cache/prepro', params['dataset_splitBy'], 'data.json')
   data_h5 = osp.join('cache/prepro', params['dataset_splitBy'], 'data.h5')
-  dets_json = None
-  if params['mode'] == 'easy':
-    dets_json = 'cache/detections/refcoco_unc/matt_gts_refcoco_unc.json'
-    det_feats = 'cache/feats/refcoco_unc/mrcn/res101_coco_minus_refer_notime_our_gt_feats.h5'
-  elif params['mode'] == 'ref':
-    dets_json = 'cache/detections/refcoco_unc/matt_dets_refcoco_unc_pos.json'
-    det_feats = 'cache/feats/refcoco_unc/mrcn/res101_coco_minus_refer_notime_our_det_feats.h5'
-  elif params['mode'] == 'det':
-    raise NotImplementedError('det mode not implemented')
-  else:
-    raise ValueError('invalid mode ' + params['mode'])
+  id_str = '%s_%s_%s_%d' % (params['m'], params['tid'], params['dataset_splitBy'], params['top_N'])
+  dets_json = 'cache/detections/%s/matt_dets_%s.json' % (params['dataset_splitBy'], id_str)
+  det_feats = 'cache/feats/%s/mrcn/matt_feats_%s.h5' % (params['dataset_splitBy'], id_str)
   loader = RefLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json)
 
   # loader's feats
@@ -82,38 +74,53 @@ def evaluate(params):
         (params['dataset_splitBy'], params['split'], len(predictions), acc*100.)) 
 
   # save
-  out_dir = osp.join('cache', 'results', params['dataset_splitBy'], 'ref')
-  if not osp.isdir(out_dir):
-    os.makedirs(out_dir)
-  out_file = osp.join(out_dir, params['id']+'_'+params['split']+'_'+params['mode']+'.json')
-  with open(out_file, 'w') as of:
-    json.dump({'predictions': predictions, 'acc': acc}, of)
+  if params['save']:
+    out_dir = osp.join('cache', 'results', params['dataset_splitBy'], 'ref')
+    if not osp.isdir(out_dir):
+      os.makedirs(out_dir)
+    out_file = osp.join(out_dir, '_'.join([params['m'], params['tid'], params['split']])+'.json')
+    with open(out_file, 'w') as of:
+      json.dump({'predictions': predictions, 'acc': acc}, of)
 
   # write to results.txt
   f = open('experiments/ref_results.txt', 'a')
   f.write('[%s][%s][%s], id[%s]\'s acc is %.2f%%\n' % \
-          (params['mode'], params['dataset_splitBy'], params['split'], params['id'], acc*100.0))
+          (params['tid'], params['dataset_splitBy'], params['split'], params['id'], acc*100.0))
 
 
 if __name__ == '__main__':
+  start = time.time()
     
   parser = argparse.ArgumentParser()
   parser.add_argument('--dataset', type=str, default='refcoco', help='dataset name: refclef, refcoco, refcoco+, refcocog')
   parser.add_argument('--splitBy', type=str, default='unc', help='splitBy: unc, google, berkeley')
-  parser.add_argument('--split', type=str, default='testA', help='split: testAB or val, etc')
-  parser.add_argument('--id', type=str, default='0', help='model id name')
+  # parser.add_argument('--split', type=str, default='testA', help='split: testAB or val, etc')
+  # parser.add_argument('--id', type=str, default='0', help='model id name')
   parser.add_argument('--num_sents', type=int, default=-1, help='how many sentences to use when periodically evaluating the loss? (-1=all)')
   parser.add_argument('--verbose', type=int, default=1, help='if we want to print the testing progress')
-  parser.add_argument('--mode', type=str, default='ref', help='ref, det OR easy')
+
+  parser.add_argument('--tid', type=str, required=True)
+  parser.add_argument('--top-N', type=int, default=8)
+  parser.add_argument('--m', type=str, required=True)
+  parser.add_argument('--save', action='store_true')
+
   args = parser.parse_args()
   params = vars(args)
 
   # make other options
-  params['dataset_splitBy'] = params['dataset'] + '_' + params['splitBy']
-  evaluate(params)
+  dataset_splitby = params['dataset'] + '_' + params['splitBy']
+  params['dataset_splitBy'] = dataset_splitby
+  
+  params['id'] = 'mrcn_cmr_with_st'
+  eval_splits = {
+    'refcoco_unc': ['val', 'testA', 'testB'],
+    'refcoco+_unc': ['val', 'testA', 'testB'],
+    'refcocog_umd': ['val', 'test']
+  }
+  for split in eval_splits[dataset_splitby]:
+    params['split'] = split
+    evaluate(params)
 
-
-
-
-
+  time_spent = int(time.time() - start) // 60
+  print('\nEvaluation completed in %d h %d m.' % (time_spent // 60, time_spent % 60))
 
