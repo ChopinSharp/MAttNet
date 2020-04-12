@@ -47,7 +47,9 @@ def evaluate(params):
   id_str = '%s_%s_%s_%d' % (params['m'], params['tid'], params['dataset_splitBy'], params['top_N'])
   dets_json = 'cache/detections/%s/matt_dets_%s.json' % (params['dataset_splitBy'], id_str)
   det_feats = 'cache/feats/%s/mrcn/matt_feats_%s.h5' % (params['dataset_splitBy'], id_str)
-  loader = RefLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json)
+  with open('cache/detections/ignore.json', 'r') as f:
+    ignore_list = json.load(f)[params['dataset_splitBy']]
+  loader = RefLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json, ignore_list=ignore_list)
 
   # loader's feats
   feats_dir = '%s_%s_%s' % (model_opt['net_name'], model_opt['imdb_name'], model_opt['tag'])
@@ -66,8 +68,6 @@ def evaluate(params):
   # evaluate on the split, 
   # predictions = [{sent_id, sent, gd_ann_id, pred_ann_id, pred_score, sub_attn, loc_attn, weights}]
   split = params['split']
-  model_opt['num_sents'] = params['num_sents']
-  model_opt['verbose'] = params['verbose']
   crit = None
   acc, predictions = eval_utils.eval_split(loader, model, crit, split, model_opt)
   print('Comprehension on %s\'s %s (%s sents) is %.2f%%' % \
@@ -94,10 +94,6 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--dataset', type=str, default='refcoco', help='dataset name: refclef, refcoco, refcoco+, refcocog')
   parser.add_argument('--splitBy', type=str, default='unc', help='splitBy: unc, google, berkeley')
-  # parser.add_argument('--split', type=str, default='testA', help='split: testAB or val, etc')
-  # parser.add_argument('--id', type=str, default='0', help='model id name')
-  parser.add_argument('--num_sents', type=int, default=-1, help='how many sentences to use when periodically evaluating the loss? (-1=all)')
-  parser.add_argument('--verbose', type=int, default=1, help='if we want to print the testing progress')
 
   parser.add_argument('--tid', type=str, required=True)
   parser.add_argument('--top-N', type=int, default=8)

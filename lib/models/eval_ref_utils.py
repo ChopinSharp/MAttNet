@@ -14,6 +14,8 @@ import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+from tqdm import tqdm
+
 # IoU function
 def computeIoU(box1, box2):
   # each box is of [x1, y1, w, h]
@@ -31,8 +33,6 @@ def computeIoU(box1, box2):
 
 
 def eval_split(loader, model, crit, split, opt):
-  verbose = opt.get('verbose', True)
-  num_sents = opt.get('num_sents', -1)
   assert split != 'train', 'Check the evaluation split. (comment this line if you are evaluating [train])'
 
   # set mode
@@ -43,7 +43,8 @@ def eval_split(loader, model, crit, split, opt):
   loss_evals = 0
   acc = 0
   predictions = []
-  finish_flag = False
+
+  pbar = tqdm(total=len(loader.split_ix[split]), ascii=True, desc=split, ncols=120)
 
   while True:
     
@@ -118,18 +119,14 @@ def eval_split(loader, model, crit, split, opt):
     predictions.append(entry)
     
     # CLEAR CACHE
-    torch.cuda.empty_cache()
-
-    # print
-    ix0 = data['bounds']['it_pos_now']
-    ix1 = data['bounds']['it_max']
-    if verbose:
-      print('evaluating [%s] ... image[%d/%d]\'s sents, acc=%.2f%%' % \
-            (split, ix0, ix1, acc*100.0/loss_evals))
+    # torch.cuda.empty_cache()
+    pbar.update(1)
     
     # if we wrapped around the split
-    if finish_flag or data['bounds']['wrapped']:
+    if data['bounds']['wrapped']:
       break
+  
+  pbar.close()
 
   return acc/loss_evals, predictions
 

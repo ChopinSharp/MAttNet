@@ -1,15 +1,25 @@
-[easy][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 80.34%
-[easy][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 82.32%
-[easy][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 78.68%
+# baseline: don't ignore sent
+[0][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 76.92%
+[0][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 81.19%
+[0][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 69.58%
 
-[ref][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 74.04%
-[ref][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 78.00%
-[ref][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 70.60%
+# baseline: ignore sent
+[0][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 77.01%
+[0][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 81.34%
+[0][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 69.66%
+[0][refcoco+_unc][val], id[mrcn_cmr_with_st]'s acc is 66.01%
+[0][refcoco+_unc][testA], id[mrcn_cmr_with_st]'s acc is 71.67%
+[0][refcoco+_unc][testB], id[mrcn_cmr_with_st]'s acc is 57.27%
+[0][refcocog_umd][val], id[mrcn_cmr_with_st]'s acc is 67.54%
+[0][refcocog_umd][test], id[mrcn_cmr_with_st]'s acc is 67.56%
 
-[ref][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 78.37%
-[ref][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 81.38%
-[ref][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 75.01%
+# vanilla
+[0404014758][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 79.27%
+[0404014758][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 82.60%
+[0404014758][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 74.61%
+[0404014821][refcoco+_unc][val], id[mrcn_cmr_with_st]'s acc is 67.08%
+[0404014821][refcoco+_unc][testA], id[mrcn_cmr_with_st]'s acc is 71.56%
+[0404014821][refcoco+_unc][testB], id[mrcn_cmr_with_st]'s acc is 59.30%
+[0404015319][refcocog_umd][val], id[mrcn_cmr_with_st]'s acc is 67.42%
+[0404015319][refcocog_umd][test], id[mrcn_cmr_with_st]'s acc is 67.73%
 
-[easy][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 86.96%
-[easy][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 86.95%
-[easy][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 85.95%

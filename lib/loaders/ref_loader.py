@@ -44,9 +44,9 @@ def xyxy_to_xywh(boxes):
 
 
 # DetsLoader instance
-class DetsLoader(Loader):
+class RefLoader(Loader):
 
-  def __init__(self, data_json, data_h5, dets_json):
+  def __init__(self, data_json, data_h5, dets_json, ignore_list):
     # parent loader instance
     Loader.__init__(self, data_json, data_h5)
 
@@ -59,26 +59,28 @@ class DetsLoader(Loader):
     # prepare dets
     self.dets = json.load(open(dets_json))
     self.Dets = {det['det_id']: det for det in self.dets}
-
-    # add dets to image
-    for image in self.images:
-      image['det_ids'] = []
+    
+    # add dets to sentence
+    for sent in self.sentences:
+      sent['det_ids'] = []
     for det in self.dets:
-      image = self.Images[det['image_id']]
-      image['det_ids'] += [det['det_id']]
+      sent = self.Sentences[det['sent_id']]
+      sent['det_ids'].append(det['det_id'])
 
     # img_iterators for each split
     self.split_ix = {}
     self.iterators = {}
-    for image_id, image in self.Images.items():
-      # we use its ref's split (there is assumption that each image only has one split)
-      split = self.Refs[image['ref_ids'][0]]['split']
+    for sent_id in self.Sentences.keys():
+      if sent_id in ignore_list:
+        continue
+      # we use its ref's split
+      split = self.sentToRef[sent_id]['split']
       if split not in self.split_ix:
         self.split_ix[split] = []
         self.iterators[split] = 0
-      self.split_ix[split] += [image_id]
+      self.split_ix[split].append(sent_id)
     for k, v in self.split_ix.items():
-      print('assigned %d images to split %s' % (len(v), k))
+      print('assigned %d sentences to split %s' % (len(v), k))
 
   def prepare_mrcn(self, head_feats_dir, args):
     """
@@ -149,9 +151,9 @@ class DetsLoader(Loader):
         return -1
       else:
         return 1
-    image = self.Images[ref_det['image_id']]
 
-    det_ids = list(image['det_ids'])  # copy in case the raw list is changed
+    sent = self.Sentences[ref_det['sent_id']]
+    det_ids = list(sent['det_ids'])  # copy in case the raw list is changed
     det_ids = sorted(det_ids, cmp=compare)
 
     st_det_ids, dt_det_ids = [], []
@@ -245,9 +247,9 @@ class DetsLoader(Loader):
     return cxt_feats, cxt_lfeats, cxt_det_ids
 
 
-  def getTestBatch(self, split, opt):
-    # Fetch feats according to the image_split_ix 
-    # current image
+  def getSentBatch(self, split, opt):
+    # Fetch feats according to the sent_split_ix 
+    # current sent
     wrapped = False
     split_ix = self.split_ix[split]
     max_index = len(split_ix) - 1
@@ -257,15 +259,17 @@ class DetsLoader(Loader):
       ri_next = 0
       wrapped = True
     self.iterators[split] = ri_next
-    image_id = split_ix[ri]
-    image = self.Images[image_id]
+    sent_id = split_ix[ri]
+    ref = self.sentToRef[sent_id]
+    image_id = ref['image_id']
+    sent = self.Sentences[sent_id]
 
     # fetch head and im_info
     head, im_info = self.image_to_head(image_id)
     head = Variable(torch.from_numpy(head).cuda())
 
     # fetch feats
-    det_ids = image['det_ids']
+    det_ids = sent['det_ids']
     det_boxes  = xywh_to_xyxy(np.vstack([self.Dets[det_id]['box'] for det_id in det_ids])) 
     pool5, fc7 = self.fetch_grid_feats(det_boxes, head, im_info) # (#det_ids, k, 7, 7)
     lfeats     = self.compute_lfeats(det_ids)
@@ -273,21 +277,16 @@ class DetsLoader(Loader):
     cxt_fc7, cxt_lfeats, cxt_det_ids = self.fetch_cxt_feats(det_ids, opt)
 
     # fetch sents, labels and gd_boxes
-    sent_ids = []
-    gd_boxes = []
-    for ref_id in image['ref_ids']:
-      ref = self.Refs[ref_id]
-      for sent_id in ref['sent_ids']:
-        sent_ids += [sent_id]
-        gd_boxes += [ref['box']]
-    labels = np.vstack([self.fetch_seq(sent_id) for sent_id in sent_ids])
+    sent_ids = [sent_id]
+    gd_boxes = [ref['box']]
+    labels = np.vstack([self.fetch_seq(sent_id)])
 
     # move to Variable
-    lfeats = Variable(torch.from_numpy(lfeats).cuda())
-    labels = Variable(torch.from_numpy(labels).long().cuda())
-    dif_lfeats = Variable(torch.from_numpy(dif_lfeats).cuda())
-    cxt_fc7 = Variable(torch.from_numpy(cxt_fc7).cuda())
-    cxt_lfeats = Variable(torch.from_numpy(cxt_lfeats).cuda())
+    lfeats = Variable(torch.from_numpy(lfeats).cuda(), volatile=True)
+    labels = Variable(torch.from_numpy(labels).long().cuda(), volatile=True)
+    dif_lfeats = Variable(torch.from_numpy(dif_lfeats).cuda(), volatile=True)
+    cxt_fc7 = Variable(torch.from_numpy(cxt_fc7).cuda(), volatile=True)
+    cxt_lfeats = Variable(torch.from_numpy(cxt_lfeats).cuda(), volatile=True)
 
     # return data
     data = {}
@@ -301,54 +300,3 @@ class DetsLoader(Loader):
     data['labels'] = labels
     data['bounds'] = {'it_pos_now': self.iterators[split], 'it_max': max_index, 'wrapped': wrapped}
     return data
-
-  def getImageBatch(self, image_id, sent_ids=None, opt={}):
-    # fetch head and im_info
-    image = self.Images[image_id]
-    head, im_info = self.image_to_head(image_id)
-    head = Variable(torch.from_numpy(head).cuda())
-
-    # fetch feats
-    det_ids = image['det_ids']
-    det_boxes  = xywh_to_xyxy(np.vstack([self.Dets[det_id]['box'] for det_id in det_ids])) 
-    pool5, fc7 = self.fetch_grid_feats(det_boxes, head, im_info) # (#det_ids, k, 7, 7)
-    lfeats     = self.compute_lfeats(det_ids)
-    dif_lfeats = self.compute_dif_lfeats(det_ids)
-    cxt_fc7, cxt_lfeats, cxt_det_ids = self.fetch_cxt_feats(det_ids, opt)
-
-    # fetch sents
-    gd_boxes = []
-    if sent_ids is None:
-      sent_ids = []
-      for ref_id in image['ref_ids']:
-        ref = self.Refs[ref_id]
-        for sent_id in ref['sent_ids']:
-          sent_ids += [sent_id]
-          gd_boxes += [ref['box']]
-    else:
-      # given sent_id, we find the gd_ix
-      for sent_id in sent_ids:
-        ref = self.sentToRef[sent_id]
-        gd_boxes += [ref['box']]
-    labels = np.vstack([self.fetch_seq(sent_id) for sent_id in sent_ids])
-
-    # move to Variable
-    lfeats = Variable(torch.from_numpy(lfeats).cuda())
-    labels = Variable(torch.from_numpy(labels).long().cuda())
-    dif_lfeats = Variable(torch.from_numpy(dif_lfeats).cuda())
-    cxt_fc7 = Variable(torch.from_numpy(cxt_fc7).cuda())
-    cxt_lfeats = Variable(torch.from_numpy(cxt_lfeats).cuda())
-
-    # return data
-    data = {}
-    data['image_id'] = image_id
-    data['det_ids'] = det_ids
-    data['cxt_det_ids'] = cxt_det_ids
-    data['sent_ids'] = sent_ids
-    data['gd_boxes'] = gd_boxes
-    data['Feats']  = {'pool5': pool5, 'fc7': fc7, 'lfeats': lfeats, 'dif_lfeats': dif_lfeats,
-                      'cxt_fc7': cxt_fc7, 'cxt_lfeats': cxt_lfeats}
-    data['labels'] = labels
-    return data
-
-
