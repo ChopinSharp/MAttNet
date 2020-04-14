@@ -6,4 +6,3 @@ data/*
 !data/README.md
 /result
 output/
-trail.py

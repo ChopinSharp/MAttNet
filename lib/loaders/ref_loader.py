@@ -60,6 +60,13 @@ class RefLoader(Loader):
     self.dets = json.load(open(dets_json))
     self.Dets = {det['det_id']: det for det in self.dets}
     
+    # add dets to image
+    for image in self.images:
+      image['det_ids'] = []
+    for det in self.dets:
+      image = self.Images[det['image_id']]
+      image['det_ids'] += [det['det_id']]
+
     # add dets to sentence
     for sent in self.sentences:
       sent['det_ids'] = []
