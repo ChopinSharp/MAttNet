@@ -115,7 +115,7 @@ def eval_split(loader, model, crit, split, opt):
     entry['rel_box'] = loader.Dets[entry['rel_det_id']]['box'] if entry['rel_det_id'] > 0 else [0,0,0,0]
     entry['weights'] = weights[pred_ix].data.cpu().numpy().tolist()   # list of 3 weights
     entry['pred_atts'] = pred_atts # list of (att_wd, score)
-    entry['scores'] = scores.tolist()
+    # entry['scores'] = scores.tolist()
     predictions.append(entry)
     
     # CLEAR CACHE
