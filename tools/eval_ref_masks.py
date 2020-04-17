@@ -67,7 +67,8 @@ def main(args, split):
     det_to_rle[det_id] = rle
 
   # load comprehension results
-  results_path = osp.join('cache/results', dataset_splitBy, 'ref', '%s_%s_%s.json' % (args.m, args.tid, split))
+  backbone = 'nmt' if args.nmt else 'ref'
+  results_path = osp.join('cache/results', dataset_splitBy, backbone, '%s_%s_%s.json' % (args.m, args.tid, split))
   with open(results_path, 'r') as f:
     results = json.load(f)
 
@@ -116,11 +117,19 @@ def main(args, split):
 
     results['iou'] = cum_I*1./cum_U
     assert 'rle' in results['predictions'][0]
-    with open(osp.join(save_dir, '%s_%s_%s.json' % (args.m, args.tid, split)), 'w') as f:
+    if args.nmt:
+      save_file = 'nmt_%s_%s_%s.json' % (args.m, args.tid, split)
+    else:
+      save_file = '%s_%s_%s.json' % (args.m, args.tid, split)
+    with open(osp.join(save_dir, save_file), 'w') as f:
       json.dump(results, f)
 
   # write to results.txt
-  with open('experiments/ref_mask_results.txt', 'a') as f:
+  if args.nmt:
+    record_file = 'experiments/nmt_ref_mask_results.txt'
+  else:
+    record_file = 'experiments/ref_mask_results.txt'
+  with open(record_file, 'a') as f:
     f.write('[%s][%s][%s][%s]\'s iou is:\n%s' % (args.m, args.tid, dataset_splitBy, split, results_str))
 
 
@@ -140,6 +149,7 @@ if __name__ == '__main__':
   parser.add_argument('--top-N', type=int, default=0)
   parser.add_argument('--m', type=str, default='vanilla')
   parser.add_argument('--save', action='store_true')
+  parser.add_argument('--nmt', action='store_true')
 
   args = parser.parse_args()
 
