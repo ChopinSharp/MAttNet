@@ -47,9 +47,7 @@ def evaluate(params):
   id_str = '%s_%s_%s_%d' % (params['m'], params['tid'], params['dataset_splitBy'], params['top_N'])
   dets_json = 'cache/detections/%s/matt_dets_%s.json' % (params['dataset_splitBy'], id_str)
   det_feats = 'cache/feats/%s/mrcn/matt_feats_%s.h5' % (params['dataset_splitBy'], id_str)
-  with open('cache/detections/ignore.json', 'r') as f:
-    ignore_list = json.load(f)[params['dataset_splitBy']]
-  loader = RefLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json, ignore_list=ignore_list)
+  loader = RefLoader(data_h5=data_h5, data_json=data_json, dets_json=dets_json)
 
   # loader's feats
   feats_dir = '%s_%s_%s' % (model_opt['net_name'], model_opt['imdb_name'], model_opt['tag'])

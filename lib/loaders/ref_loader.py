@@ -46,7 +46,7 @@ def xyxy_to_xywh(boxes):
 # DetsLoader instance
 class RefLoader(Loader):
 
-  def __init__(self, data_json, data_h5, dets_json, ignore_list):
+  def __init__(self, data_json, data_h5, dets_json):
     # parent loader instance
     Loader.__init__(self, data_json, data_h5)
 
@@ -78,8 +78,6 @@ class RefLoader(Loader):
     self.split_ix = {}
     self.iterators = {}
     for sent_id in self.Sentences.keys():
-      if sent_id in ignore_list:
-        continue
       # we use its ref's split
       split = self.sentToRef[sent_id]['split']
       if split not in self.split_ix:

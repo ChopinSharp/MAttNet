@@ -80,7 +80,7 @@ def main(args):
   ## HERE
   id_str = '%s_%s_%s_%d' % (args.m, args.tid, dataset_splitBy, args.top_N)
   dets_json = osp.join('cache/detections', dataset_splitBy, 'matt_dets_%s.json' % id_str) 
-  loader = RefLoader(data_json, data_h5, dets_json, [])
+  loader = RefLoader(data_json, data_h5, dets_json)
   images = loader.images
   dets = loader.dets
   num_dets = len(dets)

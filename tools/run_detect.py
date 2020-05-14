@@ -27,7 +27,6 @@ def cls_to_detections(scores, boxes, imdb, nms_thresh, conf_thresh):
   # run nms and threshold for each class detection
   cls_to_dets = {}
   num_dets = 0
-  print(imdb.classes)
   for cls_ind, class_name in enumerate(imdb.classes[1:]):
     cls_ind += 1  # because we skipped background
     cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind+1)]
@@ -115,8 +114,8 @@ def main(args):
   # save dets.json = [{det_id, box, image_id, score}]
   # to cache/detections/
   save_path = osp.join(save_dir, '%s_%s_%s_dets.json' % (args.net_name, args.imdb_name, args.tag))
-  # with open(save_path, 'w') as f:
-  #   json.dump(dets, f)
+  with open(save_path, 'w') as f:
+    json.dump(dets, f)
 
 
 if __name__ == '__main__':
