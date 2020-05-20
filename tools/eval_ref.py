@@ -82,8 +82,8 @@ def evaluate(params):
 
   # write to results.txt
   f = open('experiments/ref_results.txt', 'a')
-  f.write('[%s][%s][%s], id[%s]\'s acc is %.2f%%\n' % \
-          (params['tid'], params['dataset_splitBy'], params['split'], params['id'], acc*100.0))
+  f.write('[%s][%s][%s][%s], id[%s]\'s acc is %.2f%%\n' % \
+          (params['m'], params['tid'], params['dataset_splitBy'], params['split'], params['id'], acc*100.0))
 
 
 if __name__ == '__main__':
