@@ -1,58 +1,56 @@
 [refcoco_unc][val], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 75.16
-    precision@0.6 = 72.55
-    precision@0.7 = 67.83
-    precision@0.8 = 54.79
+    precision@0.5 = 75.42
+    precision@0.6 = 72.72
+    precision@0.7 = 67.88
+    precision@0.8 = 54.85
     precision@0.9 = 16.81
-    ovearall IoU = 56.51
+    ovearall IoU = 57.03
 [refcoco_unc][testA], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 79.55
-    precision@0.6 = 77.60
-    precision@0.7 = 72.53
+    precision@0.5 = 79.62
+    precision@0.6 = 77.89
+    precision@0.7 = 72.85
     precision@0.8 = 59.01
-    precision@0.9 = 13.79
-    ovearall IoU = 62.37
+    precision@0.9 = 13.82
+    ovearall IoU = 62.53
 [refcoco_unc][testB], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 68.87
-    precision@0.6 = 65.06
-    precision@0.7 = 60.02
-    precision@0.8 = 48.91
-    precision@0.9 = 21.37
-    ovearall IoU = 51.70
-
+    precision@0.5 = 68.62
+    precision@0.6 = 64.99
+    precision@0.7 = 59.80
+    precision@0.8 = 48.79
+    precision@0.9 = 20.86
+    ovearall IoU = 51.47
 [refcoco+_unc][val], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 64.11
-    precision@0.6 = 61.87
-    precision@0.7 = 58.06
-    precision@0.8 = 47.42
-    precision@0.9 = 14.16
-    ovearall IoU = 46.67
+    precision@0.5 = 64.71
+    precision@0.6 = 62.44
+    precision@0.7 = 58.54
+    precision@0.8 = 47.76
+    precision@0.9 = 14.33
+    ovearall IoU = 47.30
 [refcoco+_unc][testA], id[mrcn_cmr_with_st]'s iou is:
     precision@0.5 = 70.12
-    precision@0.6 = 68.48
-    precision@0.7 = 63.97
-    precision@0.8 = 52.13
-    precision@0.9 = 12.28
-    ovearall IoU = 52.39
+    precision@0.6 = 68.44
+    precision@0.7 = 63.87
+    precision@0.8 = 51.89
+    precision@0.9 = 12.29
+    ovearall IoU = 52.37
 [refcoco+_unc][testB], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 54.82
-    precision@0.6 = 51.73
-    precision@0.7 = 47.27
-    precision@0.8 = 38.58
-    precision@0.9 = 17.00
-    ovearall IoU = 40.08
-    
+    precision@0.5 = 56.00
+    precision@0.6 = 52.85
+    precision@0.7 = 48.27
+    precision@0.8 = 39.23
+    precision@0.9 = 17.24
+    ovearall IoU = 41.14
 [refcocog_umd][val], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 64.48
-    precision@0.6 = 61.52
-    precision@0.7 = 56.50
-    precision@0.8 = 43.97
+    precision@0.5 = 65.28
+    precision@0.6 = 62.25
+    precision@0.7 = 56.96
+    precision@0.8 = 44.36
     precision@0.9 = 14.67
-    ovearall IoU = 47.64
+    ovearall IoU = 48.28
 [refcocog_umd][test], id[mrcn_cmr_with_st]'s iou is:
-    precision@0.5 = 65.60
-    precision@0.6 = 62.92
-    precision@0.7 = 57.31
-    precision@0.8 = 44.44
-    precision@0.9 = 12.55
-    ovearall IoU = 48.61
+    precision@0.5 = 65.93
+    precision@0.6 = 63.14
+    precision@0.7 = 57.51
+    precision@0.8 = 44.62
+    precision@0.9 = 12.61
+    ovearall IoU = 49.01

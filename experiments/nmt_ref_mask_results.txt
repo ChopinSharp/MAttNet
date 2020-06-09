@@ -1,0 +1,265 @@
+[ori][0][refcoco_unc][val]'s iou is:
+expression number = 10834
+    precision@0.5 = 75.15
+    precision@0.6 = 72.45
+    precision@0.7 = 67.58
+    precision@0.8 = 54.45
+    precision@0.9 = 16.59
+    ovearall IoU = 56.99
+[ori][0][refcoco_unc][testA]'s iou is:
+expression number = 5657
+    precision@0.5 = 79.58
+    precision@0.6 = 77.73
+    precision@0.7 = 72.74
+    precision@0.8 = 58.87
+    precision@0.9 = 13.88
+    ovearall IoU = 62.88
+[ori][0][refcoco_unc][testB]'s iou is:
+expression number = 5095
+    precision@0.5 = 68.64
+    precision@0.6 = 65.10
+    precision@0.7 = 60.02
+    precision@0.8 = 49.17
+    precision@0.9 = 21.35
+    ovearall IoU = 51.90
+[ori][0][refcoco+_unc][val]'s iou is:
+expression number = 10758
+    precision@0.5 = 65.24
+    precision@0.6 = 62.92
+    precision@0.7 = 58.98
+    precision@0.8 = 47.56
+    precision@0.9 = 14.34
+    ovearall IoU = 47.75
+[ori][0][refcoco+_unc][testA]'s iou is:
+expression number = 5726
+    precision@0.5 = 69.89
+    precision@0.6 = 68.11
+    precision@0.7 = 63.64
+    precision@0.8 = 52.03
+    precision@0.9 = 12.38
+    ovearall IoU = 52.36
+[ori][0][refcoco+_unc][testB]'s iou is:
+expression number = 4889
+    precision@0.5 = 56.49
+    precision@0.6 = 53.32
+    precision@0.7 = 49.21
+    precision@0.8 = 39.33
+    precision@0.9 = 17.30
+    ovearall IoU = 41.86
+[ori][0][refcocog_umd][val]'s iou is:
+expression number = 4896
+    precision@0.5 = 63.32
+    precision@0.6 = 60.21
+    precision@0.7 = 55.23
+    precision@0.8 = 42.99
+    precision@0.9 = 14.56
+    ovearall IoU = 46.19
+[ori][0][refcocog_umd][test]'s iou is:
+expression number = 9602
+    precision@0.5 = 64.43
+    precision@0.6 = 61.58
+    precision@0.7 = 56.31
+    precision@0.8 = 43.88
+    precision@0.9 = 12.57
+    ovearall IoU = 47.41
+[vanilla][0404014758][refcoco_unc][val]'s iou is:
+expression number = 10834
+    precision@0.5 = 77.02
+    precision@0.6 = 73.96
+    precision@0.7 = 68.54
+    precision@0.8 = 55.28
+    precision@0.9 = 16.66
+    ovearall IoU = 59.81
+[vanilla][0404014758][refcoco_unc][testA]'s iou is:
+expression number = 5657
+    precision@0.5 = 80.17
+    precision@0.6 = 78.26
+    precision@0.7 = 72.81
+    precision@0.8 = 58.58
+    precision@0.9 = 13.59
+    ovearall IoU = 63.03
+[vanilla][0404014758][refcoco_unc][testB]'s iou is:
+expression number = 5095
+    precision@0.5 = 72.19
+    precision@0.6 = 68.13
+    precision@0.7 = 62.51
+    precision@0.8 = 50.87
+    precision@0.9 = 21.14
+    ovearall IoU = 56.32
+[vanilla][0404014821][refcoco+_unc][val]'s iou is:
+expression number = 10758
+    precision@0.5 = 65.59
+    precision@0.6 = 62.89
+    precision@0.7 = 58.56
+    precision@0.8 = 47.42
+    precision@0.9 = 14.07
+    ovearall IoU = 48.80
+[vanilla][0404014821][refcoco+_unc][testA]'s iou is:
+expression number = 5726
+    precision@0.5 = 70.90
+    precision@0.6 = 68.91
+    precision@0.7 = 64.20
+    precision@0.8 = 52.41
+    precision@0.9 = 12.35
+    ovearall IoU = 53.31
+[vanilla][0404014821][refcoco+_unc][testB]'s iou is:
+expression number = 4889
+    precision@0.5 = 57.03
+    precision@0.6 = 53.32
+    precision@0.7 = 48.86
+    precision@0.8 = 39.39
+    precision@0.9 = 16.67
+    ovearall IoU = 42.20
+[vanilla][0404015319][refcocog_umd][val]'s iou is:
+expression number = 4896
+    precision@0.5 = 63.77
+    precision@0.6 = 59.99
+    precision@0.7 = 54.96
+    precision@0.8 = 42.52
+    precision@0.9 = 14.17
+    ovearall IoU = 47.57
+[vanilla][0404015319][refcocog_umd][test]'s iou is:
+expression number = 9602
+    precision@0.5 = 64.06
+    precision@0.6 = 60.84
+    precision@0.7 = 55.71
+    precision@0.8 = 43.32
+    precision@0.9 = 12.40
+    ovearall IoU = 47.40
+
++----------------------------------------------------------+
+|                      New Results                         |
++----------------------------------------------------------+
+[att_vanilla][0526231457][refcoco_unc][val]'s iou is:
+expression number = 10834
+    precision@0.5 = 77.13
+    precision@0.6 = 74.04
+    precision@0.7 = 68.61
+    precision@0.8 = 55.53
+    precision@0.9 = 16.95
+    ovearall IoU = 59.95
+[att_vanilla][0526231457][refcoco_unc][testA]'s iou is:
+expression number = 5657
+    precision@0.5 = 80.22
+    precision@0.6 = 78.03
+    precision@0.7 = 72.95
+    precision@0.8 = 58.62
+    precision@0.9 = 13.77
+    ovearall IoU = 63.25
+[att_vanilla][0526231457][refcoco_unc][testB]'s iou is:
+expression number = 5095
+    precision@0.5 = 71.64
+    precision@0.6 = 67.99
+    precision@0.7 = 61.79
+    precision@0.8 = 49.72
+    precision@0.9 = 21.43
+    ovearall IoU = 55.64
+
+[att_vanilla][0526233422][refcoco+_unc][val]'s iou is:
+expression number = 10758
+    precision@0.5 = 65.44
+    precision@0.6 = 62.96
+    precision@0.7 = 58.81
+    precision@0.8 = 47.33
+    precision@0.9 = 14.52
+    ovearall IoU = 48.68
+[att_vanilla][0526233422][refcoco+_unc][testA]'s iou is:
+expression number = 5726
+    precision@0.5 = 69.93
+    precision@0.6 = 67.88
+    precision@0.7 = 63.43
+    precision@0.8 = 50.87
+    precision@0.9 = 12.45
+    ovearall IoU = 52.30
+[att_vanilla][0526233422][refcoco+_unc][testB]'s iou is:
+expression number = 4889
+    precision@0.5 = 57.03
+    precision@0.6 = 53.65
+    precision@0.7 = 49.09
+    precision@0.8 = 39.19
+    precision@0.9 = 16.49
+    ovearall IoU = 42.64
+
+[att_vanilla][0527000446][refcocog_umd][val]'s iou is:
+expression number = 4896
+    precision@0.5 = 64.40
+    precision@0.6 = 61.01
+    precision@0.7 = 55.54
+    precision@0.8 = 43.10
+    precision@0.9 = 14.69
+    ovearall IoU = 48.14
+[att_vanilla][0527000446][refcocog_umd][test]'s iou is:
+expression number = 9602
+    precision@0.5 = 64.94
+    precision@0.6 = 61.87
+    precision@0.7 = 56.34
+    precision@0.8 = 44.28
+    precision@0.9 = 12.98
+    ovearall IoU = 48.59
+
+[att_rank][0529024051][refcoco_unc][val]'s iou is:
+expression number = 10834
+    precision@0.5 = 76.46
+    precision@0.6 = 73.62
+    precision@0.7 = 68.56
+    precision@0.8 = 55.46
+    precision@0.9 = 16.85
+    ovearall IoU = 58.42
+[att_rank][0529024051][refcoco_unc][testA]'s iou is:
+expression number = 5657
+    precision@0.5 = 79.87
+    precision@0.6 = 77.92
+    precision@0.7 = 73.27
+    precision@0.8 = 58.02
+    precision@0.9 = 13.65
+    ovearall IoU = 62.69
+[att_rank][0529024051][refcoco_unc][testB]'s iou is:
+expression number = 5095
+    precision@0.5 = 70.32
+    precision@0.6 = 66.89
+    precision@0.7 = 61.43
+    precision@0.8 = 50.97
+    precision@0.9 = 21.81
+    ovearall IoU = 53.60
+
+[att_rank][0529141233_cont][refcocog_umd][val]'s iou is:
+expression number = 4896
+    precision@0.5 = 64.01
+    precision@0.6 = 61.07
+    precision@0.7 = 55.86
+    precision@0.8 = 43.67
+    precision@0.9 = 15.20
+    ovearall IoU = 47.72
+[att_rank][0529141233_cont][refcocog_umd][test]'s iou is:
+expression number = 9602
+    precision@0.5 = 64.54
+    precision@0.6 = 61.41
+    precision@0.7 = 56.09
+    precision@0.8 = 44.62
+    precision@0.9 = 13.25
+    ovearall IoU = 48.09
+
+[att_rank][0529124901_cont][refcoco+_unc][val]'s iou is:
+expression number = 10758
+    precision@0.5 = 65.54
+    precision@0.6 = 63.15
+    precision@0.7 = 59.07
+    precision@0.8 = 47.59
+    precision@0.9 = 14.58
+    ovearall IoU = 48.27
+[att_rank][0529124901_cont][refcoco+_unc][testA]'s iou is:
+expression number = 5726
+    precision@0.5 = 70.21
+    precision@0.6 = 68.46
+    precision@0.7 = 64.02
+    precision@0.8 = 51.50
+    precision@0.9 = 11.91
+    ovearall IoU = 52.65
+[att_rank][0529124901_cont][refcoco+_unc][testB]'s iou is:
+expression number = 4889
+    precision@0.5 = 57.21
+    precision@0.6 = 54.45
+    precision@0.7 = 50.19
+    precision@0.8 = 40.54
+    precision@0.9 = 17.43
+    ovearall IoU = 42.18
