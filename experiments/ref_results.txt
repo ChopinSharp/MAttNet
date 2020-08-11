@@ -198,3 +198,26 @@
 [att_rank][0529124901_cont][refcoco+_unc][val], id[mrcn_cmr_with_st]'s acc is 66.64%
 [att_rank][0529124901_cont][refcoco+_unc][testA], id[mrcn_cmr_with_st]'s acc is 71.36%
 [att_rank][0529124901_cont][refcoco+_unc][testB], id[mrcn_cmr_with_st]'s acc is 58.01%
+
+# edgebox baseline
+[edge][0][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 11.51%
+[edge][0][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 11.37%
+[edge][0][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 12.17%
+[edge][0][refcoco+_unc][val], id[mrcn_cmr_with_st]'s acc is 10.51%
+[edge][0][refcoco+_unc][testA], id[mrcn_cmr_with_st]'s acc is 10.20%
+[edge][0][refcoco+_unc][testB], id[mrcn_cmr_with_st]'s acc is 10.70%
+[edge][0][refcocog_umd][val], id[mrcn_cmr_with_st]'s acc is 11.60%
+[edge][0][refcocog_umd][test], id[mrcn_cmr_with_st]'s acc is 10.91%
+
+# edgebox + Ref-NMS-B
+[edge_att_vanilla][0526231457][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 67.18%
+[edge_att_vanilla][0526231457][refcoco_unc][testA], id[mrcn_cmr_with_st]'s acc is 70.94%
+[edge_att_vanilla][0526231457][refcoco_unc][testB], id[mrcn_cmr_with_st]'s acc is 61.98%
+[edge_att_vanilla][0526233422][refcoco+_unc][val], id[mrcn_cmr_with_st]'s acc is 55.34%
+[edge_att_vanilla][0526233422][refcoco+_unc][testA], id[mrcn_cmr_with_st]'s acc is 59.87%
+[edge_att_vanilla][0526233422][refcoco+_unc][testB], id[mrcn_cmr_with_st]'s acc is 47.39%
+[edge_att_vanilla][0527000446][refcocog_umd][val], id[mrcn_cmr_with_st]'s acc is 51.14%
+[edge_att_vanilla][0527000446][refcocog_umd][test], id[mrcn_cmr_with_st]'s acc is 50.61%
+[att_vanilla][0526231457][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 78.82%
+[att_vanilla][0526231457][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 78.82%
+[att_vanilla][0526231457][refcoco_unc][val], id[mrcn_cmr_with_st]'s acc is 78.82%
